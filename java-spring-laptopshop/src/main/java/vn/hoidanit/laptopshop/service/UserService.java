@@ -2,7 +2,6 @@ package vn.hoidanit.laptopshop.service;
 
 import java.util.List;
 
-import org.eclipse.tags.shaded.java_cup.runtime.lr_parser;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.laptopshop.domain.Role;
@@ -56,4 +55,8 @@ public class UserService {
         return user;
     }
 
+    // kiểm tra email đã tồn tại hay chưa
+    public boolean checkEmailExist(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
 }
