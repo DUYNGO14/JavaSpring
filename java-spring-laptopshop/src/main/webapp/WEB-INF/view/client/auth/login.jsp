@@ -27,17 +27,24 @@
                                                 <h3 class="text-center font-weight-light my-4">Login</h3>
                                             </div>
                                             <div class="card-body">
-                                                <form:form method="post" action="/login" enctype="multipart/form-data"
-                                                    modelAttribute="loginUser">
+                                                <form method="post" action="/login">
+                                                    <c:if test="${param.error != null}">
+                                                        <div class="my-2" style="color: red;">Invalid email or password.
+                                                        </div>
+                                                    </c:if>
                                                     <div class="form-floating mb-3">
-                                                        <form:input class="form-control" type="email"
-                                                            placeholder="name@example.com" />
+                                                        <input class="form-control" id="inputEmail" type="email"
+                                                            placeholder="name@example.com" name="username" />
                                                         <label for="inputEmail">Email address</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <form:input class="form-control" type="password"
-                                                            placeholder="Password" />
+                                                        <input class="form-control" id="inputPassword" type="password"
+                                                            placeholder="Password" name="password" />
                                                         <label for="inputPassword">Password</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
                                                     </div>
                                                     <div class="form-check mb-3">
                                                         <input class="form-check-input" id="inputRememberPassword"
@@ -46,10 +53,10 @@
                                                             for="inputRememberPassword">Remember Password</label>
                                                     </div>
                                                     <div class="mt-4 mb-0">
-                                                        <div class="d-grid"><button
+                                                        <div class="d-grid"><button type="submit"
                                                                 class="btn btn-primary btn-block">Login</button></div>
                                                     </div>
-                                                </form:form>
+                                                </form>
                                             </div>
                                             <div class="card-footer text-center py-3">
                                                 <div class="small"><a href="/register">Need an account? Sign up!</a>
@@ -61,6 +68,7 @@
                             </div>
                         </main>
                     </div>
+
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>
