@@ -51,7 +51,6 @@ public class CustomSuccessHandle implements AuthenticationSuccessHandler {
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
-
             return;
         }
 
