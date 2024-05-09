@@ -61,12 +61,12 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Products</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Handle</th>
+                                        <th scope="col">Sản Phẩm</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">Giá cả</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Thành Tiền</th>
+                                        <th scope="col">Xử lý</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,7 +102,9 @@
                                                     </div>
                                                     <input type="text"
                                                         class="form-control form-control-sm text-center border-0"
-                                                        value="${cartDetail.quantity}">
+                                                        value="${cartDetail.quantity}"
+                                                        data-cart-detail-id="${cartDetail.id}"
+                                                        data-cart-detail-price="${cartDetail.price}">
                                                     <div class="input-group-btn">
                                                         <button
                                                             class="btn btn-sm btn-plus rounded-circle bg-light border">
@@ -112,15 +114,19 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <p class="mb-0 mt-4">
+                                                <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
                                                     <fmt:formatNumber type="number"
                                                         value="${cartDetail.price * cartDetail.quantity}" /> đ
                                                 </p>
                                             </td>
                                             <td>
-                                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                                    <i class="fa fa-times text-danger"></i>
-                                                </button>
+                                                <form method="post" action="/delete-cart-product/${cartDetail.id}">
+                                                    <input type="hidden" name="${_csrf.parameterName}"
+                                                        value="${_csrf.token}" />
+                                                    <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                                        <i class="fa fa-times text-danger"></i>
+                                                    </button>
+                                                </form>
                                             </td>
 
                                         </tr>
@@ -143,7 +149,7 @@
                                         </h1>
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="mb-0 me-4">Tạm tính:</h5>
-                                            <p class="mb-0">
+                                            <p class="mb-0" data-cart-total-price="${totalPrice}">
                                                 <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                             </p>
                                         </div>
@@ -157,7 +163,7 @@
                                     </div>
                                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                         <h5 class="mb-0 ps-4 me-4">Tổng số tiền</h5>
-                                        <p class="mb-0 pe-4">
+                                        <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                             <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                         </p>
                                     </div>
