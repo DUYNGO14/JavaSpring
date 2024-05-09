@@ -21,8 +21,11 @@ public class ProductService {
     private final CartDetailRepository cartDetailRepository;
     private final UserService userService;
 
-    public ProductService(ProductRepository productRepository, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository, UserService userService) {
+    public ProductService(
+            ProductRepository productRepository,
+            CartRepository cartRepository,
+            CartDetailRepository cartDetailRepository,
+            UserService userService) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
@@ -45,11 +48,13 @@ public class ProductService {
         this.productRepository.deleteById(id);
     }
 
-    public void hanleAddProductToCart(String email, long productId, HttpSession session) {
-        // check uset đã có cart chưa? nếu chưa ->tạo mới
+    public void handleAddProductToCart(String email, long productId, HttpSession session) {
+
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
+            // check user đã có Cart chưa ? nếu chưa -> tạo mới
             Cart cart = this.cartRepository.findByUser(user);
+
             if (cart == null) {
                 // tạo mới cart
                 Cart otherCart = new Cart();
@@ -58,26 +63,29 @@ public class ProductService {
 
                 cart = this.cartRepository.save(otherCart);
             }
-            // Lưu cart_detail
+
+            // save cart_detail
             // tìm product by id
+
             Optional<Product> productOptional = this.productRepository.findById(productId);
             if (productOptional.isPresent()) {
                 Product realProduct = productOptional.get();
-                // check sản phẩm đã được thêm vào giỏ hàng trước đây chưa
-                CartDetail oldDetail = this.cartDetailRepository.findByCartAndProduct(cart, realProduct);
 
+                // check sản phẩm đã từng được thêm vào giỏ hàng trước đây chưa ?
+                CartDetail oldDetail = this.cartDetailRepository.findByCartAndProduct(cart, realProduct);
+                //
                 if (oldDetail == null) {
-                    CartDetail cartDetail = new CartDetail();
-                    cartDetail.setCart(cart);
-                    cartDetail.setProduct(realProduct);
-                    cartDetail.setPrice(realProduct.getPrice());
-                    cartDetail.setQuantity(1);
-                    this.cartDetailRepository.save(cartDetail);
-                    // update cart sum
+                    CartDetail cd = new CartDetail();
+                    cd.setCart(cart);
+                    cd.setProduct(realProduct);
+                    cd.setPrice(realProduct.getPrice());
+                    cd.setQuantity(1);
+                    this.cartDetailRepository.save(cd);
+
+                    // update cart (sum);
                     int s = cart.getSum() + 1;
                     cart.setSum(s);
                     this.cartRepository.save(cart);
-
                     session.setAttribute("sum", s);
                 } else {
                     oldDetail.setQuantity(oldDetail.getQuantity() + 1);
@@ -87,7 +95,6 @@ public class ProductService {
             }
 
         }
-
     }
 
     public Cart fetchByUser(User user) {
@@ -114,6 +121,17 @@ public class ProductService {
                 // delete cart (sum = 1)
                 this.cartRepository.deleteById(currentCart.getId());
                 session.setAttribute("sum", 0);
+            }
+        }
+    }
+
+    public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
+        for (CartDetail cartDetail : cartDetails) {
+            Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+            if (cdOptional.isPresent()) {
+                CartDetail currentCartDetail = cdOptional.get();
+                currentCartDetail.setQuantity(cartDetail.getQuantity());
+                this.cartDetailRepository.save(currentCartDetail);
             }
         }
     }
