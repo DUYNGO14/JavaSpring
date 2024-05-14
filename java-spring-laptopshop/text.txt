@@ -1,0 +1,3 @@
+Controller: nơi điều hướng
+service:nơi lấy data
+repository: nơi thực hiện lấy data

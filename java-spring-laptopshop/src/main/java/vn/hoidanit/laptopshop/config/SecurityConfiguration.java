@@ -66,7 +66,8 @@ public class SecurityConfiguration {
                         .permitAll()
                         // cho phép người dùng truy cập tất cả các file nằm trong :"/", "/login",
                         // "/client/**", "/css/**", "/js/**" "/images/**"
-                        .requestMatchers("/", "/login", "/product/**", "/client/**", "/css/**", "/js/**", "/images/**")
+                        .requestMatchers("/", "/login", "/product/**", "/register", "/client/**", "/css/**", "/js/**",
+                                "/images/**")
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
