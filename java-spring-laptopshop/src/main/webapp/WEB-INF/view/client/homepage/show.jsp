@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <html lang="en">
 
             <head>
@@ -46,30 +45,6 @@
                 <jsp:include page="../layout/header.jsp" />
 
 
-
-                <!-- Modal Search Start -->
-                <!-- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-fullscreen">
-                        <div class="modal-content rounded-0">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body d-flex align-items-center">
-                                <div class="input-group w-75 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords"
-                                        aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i
-                                            class="fa fa-search"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Modal Search End -->
-
                 <jsp:include page="../layout/banner.jsp" />
 
 
@@ -86,8 +61,7 @@
                                 <div class="col-lg-8 text-end">
                                     <ul class="nav nav-pills d-inline-flex text-center mb-5">
                                         <li class="nav-item">
-                                            <a class="d-flex m-2 py-2 bg-light rounded-pill active"
-                                                data-bs-toggle="pill" href="#tab-1">
+                                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" href="/products">
                                                 <span class="text-dark" style="width: 130px;">All Products</span>
                                             </a>
                                         </li>
@@ -110,63 +84,49 @@
                                                                 style="top: 10px; left: 10px;">Laptop</div>
                                                             <div
                                                                 class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                                <h4 style="font-size: 15px;"><a
-                                                                        href="/product/${product.id}">${product.name}</a>
+                                                                <h4 style="font-size: 15px;">
+                                                                    <a href="/product/${product.id}">
+                                                                        ${product.name}
+                                                                    </a>
+
                                                                 </h4>
                                                                 <p style="font-size: 13px;">${product.shortDesc}</p>
-                                                                <div class="d-flex flex-lg-wrap justify-content-center">
+                                                                <div
+                                                                    class="d-flex  flex-lg-wrap justify-content-center flex-column">
                                                                     <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                        class="text-dark fw-bold mb-3">
+                                                                        class="text-dark  fw-bold mb-3">
                                                                         <fmt:formatNumber type="number"
                                                                             value="${product.price}" /> đ
-
                                                                     </p>
                                                                     <form action="/add-product-to-cart/${product.id}"
                                                                         method="post">
                                                                         <input type="hidden"
                                                                             name="${_csrf.parameterName}"
                                                                             value="${_csrf.token}" />
+
                                                                         <button
                                                                             class="mx-auto btn border border-secondary rounded-pill px-3 text-primary"><i
                                                                                 class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                            Add to cart</button>
+                                                                            Add to cart
+                                                                        </button>
                                                                     </form>
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </c:forEach>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="/admin/product?page=1">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="/admin/product?page=2">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="/admin/product?page=3">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
                         </div>
                     </div>
                 </div>
                 <!-- Fruits Shop End-->
 
-
                 <jsp:include page="../layout/feature.jsp" />
+
                 <jsp:include page="../layout/footer.jsp" />
 
 
