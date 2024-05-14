@@ -13,12 +13,14 @@ import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Order;
 import vn.hoidanit.laptopshop.domain.OrderDetail;
 import vn.hoidanit.laptopshop.domain.Product;
+
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
 import vn.hoidanit.laptopshop.repository.OrderRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
+import vn.hoidanit.laptopshop.service.Specification.ProductSpecs;
 
 @Service
 public class ProductService {
@@ -50,6 +52,10 @@ public class ProductService {
 
     public Page<Product> fetchProducts(Pageable page) {
         return this.productRepository.findAll(page);
+    }
+
+    public Page<Product> fetchProductsSWithSpec(Pageable page, String name) {
+        return this.productRepository.findAll(ProductSpecs.nameLike(name), page);
     }
 
     public Optional<Product> fetchProductById(long id) {
