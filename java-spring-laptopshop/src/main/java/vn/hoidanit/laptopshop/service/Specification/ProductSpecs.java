@@ -34,6 +34,10 @@ public class ProductSpecs {
         return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.FACTORY)).value(factory);
     }
 
+    public static Specification<Product> matchListTarget(List<String> target) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.TARGET)).value(target);
+    }
+
     // case5 lấy ra tất cả sản phẩm theo range (khoảng giá). 10 triệu <= price <= 15
     // triệu
     public static Specification<Product> matchPrice(double min, double max) {
