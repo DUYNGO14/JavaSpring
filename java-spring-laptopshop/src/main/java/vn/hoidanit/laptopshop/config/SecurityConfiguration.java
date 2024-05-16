@@ -2,9 +2,7 @@ package vn.hoidanit.laptopshop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -45,7 +43,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationSuccessHandler customSuccessHandle() {
+    public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandle();
     }
 
@@ -54,38 +52,43 @@ public class SecurityConfiguration {
         SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
         // optionally customize
         rememberMeServices.setAlwaysRemember(true);
+
         return rememberMeServices;
     }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // v6. lamda
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.INCLUDE)
                         .permitAll()
-                        // cho phép người dùng truy cập tất cả các file nằm trong :"/", "/login",
-                        // "/client/**", "/css/**", "/js/**" "/images/**"
-                        .requestMatchers("/", "/login", "/product/**", "/register", "/client/**", "/css/**", "/js/**",
-                                "/images/**")
+
+                        .requestMatchers("/", "/login", "/product/**", "/register", "/products/**",
+                                "/client/**", "/css/**", "/js/**", "/images/**")
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated())
+
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .invalidSessionUrl("/logout?expired")
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
+
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+
                 .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
-                        .successHandler(customSuccessHandle())
+                        .successHandler(customSuccessHandler())
                         .permitAll())
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+
         return http.build();
     }
 
